@@ -44,12 +44,19 @@
 // };
 
 import React from "react";
-import { AuthPage } from "@refinedev/antd";
+import { AuthPage, ThemedTitleV2 } from "@refinedev/antd";
 
 export const Login = () => {
   return (
     <AuthPage
       type="login"
+       title={
+        <ThemedTitleV2
+          text="My Title"
+          icon={<img src="https://refine.dev/img/logo.png" />}
+          collapsed={false}
+        />
+      }
       formProps={{
         initialValues: {
           email: "demo@demo.com",

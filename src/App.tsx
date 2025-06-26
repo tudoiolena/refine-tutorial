@@ -17,6 +17,7 @@ import { CreateProduct } from "./pages/products/create";
 
 import { Login } from "./pages/login";
 import { Header } from "./pages/components/header";
+import { CategoriesList } from "./pages/categories/list";
 
 // We're importing a reset.css file to reset the default styles of the browser.
 import "antd/dist/reset.css";
@@ -31,16 +32,26 @@ export default function App(): JSX.Element {
             authProvider={authProvider}
             routerProvider={routerProvider}
             notificationProvider={useNotificationProvider}
-            resources={[
-              {
-                name: "protected-products",
-                list: "/products",
-                show: "/products/:id",
-                edit: "/products/:id/edit",
-                create: "/products/create",
-                meta: { label: "Products" },
-              },
-            ]}
+            resources={[// We're adding the categories resource to the resources array
+            {
+              name: "protected-products",
+              list: "/products",
+              show: "/products/:id",
+              edit: "/products/:id/edit",
+              create: "/products/create",
+              meta: { label: "Products" },
+            }, // This way, there will be a link to the categories list in the sidebar
+            {
+              name: "categories",
+              list: "/categories",
+              meta: { label: "Categories" },
+            }, {
+              name: "categories",
+              list: "/categories",
+              create: "/categories/create",
+              edit: "/categories/edit/:id",
+              show: "/categories/show/:id"
+            }]}
           >
               <Routes>
                 <Route
@@ -65,6 +76,9 @@ export default function App(): JSX.Element {
                     <Route path=":id" element={<ShowProduct />} />
                     <Route path=":id/edit" element={<EditProduct />} />
                     <Route path="create" element={<CreateProduct />} />
+                  </Route>
+                  <Route path="/categories">
+                    <Route index element={<CategoriesList />} />
                   </Route>
                 </Route>
                 <Route
