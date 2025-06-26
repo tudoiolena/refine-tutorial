@@ -1,3 +1,4 @@
+import { DevtoolsProvider, DevtoolsPanel } from "@refinedev/devtools";
 import { Refine, Authenticated } from "@refinedev/core";
 import routerProvider, { NavigateToResource } from "@refinedev/react-router";
 
@@ -5,7 +6,11 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 
 // We'll wrap our app with Ant Design's ConfigProvider to set the theme and App component to use the theme properly.
 import { ConfigProvider, App as AntdApp } from "antd";
-import { ThemedLayoutV2, ThemedTitleV2, useNotificationProvider } from "@refinedev/antd";
+import {
+  ThemedLayoutV2,
+  ThemedTitleV2,
+  useNotificationProvider,
+} from "@refinedev/antd";
 
 import { dataProvider } from "./providers/data-provider";
 import { authProvider } from "./providers/auth-provider";
@@ -27,50 +32,64 @@ export default function App(): JSX.Element {
     <BrowserRouter>
       <ConfigProvider>
         <AntdApp>
-          <Refine 
-            dataProvider={dataProvider}
-            authProvider={authProvider}
-            routerProvider={routerProvider}
-            notificationProvider={useNotificationProvider}
-            resources={[// We're adding the categories resource to the resources array
-            {
-              name: "protected-products",
-              list: "/products",
-              show: "/products/:id",
-              edit: "/products/:id/edit",
-              create: "/products/create",
-              meta: { label: "Products" },
-            }, // This way, there will be a link to the categories list in the sidebar
-            {
-              name: "categories",
-              list: "/categories",
-              meta: { label: "Categories" },
-            }, {
-              name: "categories",
-              list: "/categories",
-              create: "/categories/create",
-              edit: "/categories/edit/:id",
-              show: "/categories/show/:id"
-            }]}
-          >
+          <DevtoolsProvider>
+            <Refine
+              dataProvider={dataProvider}
+              authProvider={authProvider}
+              routerProvider={routerProvider}
+              notificationProvider={useNotificationProvider}
+              resources={[
+                // We're adding the categories resource to the resources array
+                {
+                  name: "protected-products",
+                  list: "/products",
+                  show: "/products/:id",
+                  edit: "/products/:id/edit",
+                  create: "/products/create",
+                  meta: { label: "Products" },
+                }, // This way, there will be a link to the categories list in the sidebar
+                {
+                  name: "categories",
+                  list: "/categories",
+                  meta: { label: "Categories" },
+                },
+                {
+                  name: "categories",
+                  list: "/categories",
+                  create: "/categories/create",
+                  edit: "/categories/edit/:id",
+                  show: "/categories/show/:id",
+                },
+              ]}
+              options={{
+                projectId: "7mWsBi-KvB4Jg-Ux5eAo"
+              }}>
               <Routes>
                 <Route
                   element={
                     // We're wrapping our routes with the `<Authenticated />` component
                     // We're omitting the `fallback` prop to redirect users to the login page if they are not authenticated.
                     // If the user is authenticated, we'll render the `<Header />` component and the `<Outlet />` component to render the inner routes.
-                    <Authenticated key="authenticated-routes" redirectOnFail="/login">
-                       <ThemedLayoutV2
-                        Title={(props) => (
-                        <ThemedTitleV2 {...props} text="Awesome Project" />
-                      )}
+                    <Authenticated
+                      key="authenticated-routes"
+                      redirectOnFail="/login"
                     >
+                      <ThemedLayoutV2
+                        Title={(props) => (
+                          <ThemedTitleV2 {...props} text="Awesome Project" />
+                        )}
+                      >
                         <Outlet />
                       </ThemedLayoutV2>
                     </Authenticated>
                   }
                 >
-                  <Route index  element={<NavigateToResource resource="protected-products" />} />
+                  <Route
+                    index
+                    element={
+                      <NavigateToResource resource="protected-products" />
+                    }
+                  />
                   <Route path="/products">
                     <Route index element={<ListProducts />} />
                     <Route path=":id" element={<ShowProduct />} />
@@ -92,7 +111,9 @@ export default function App(): JSX.Element {
                   <Route path="/login" element={<Login />} />
                 </Route>
               </Routes>
-          </Refine>
+            </Refine>
+            <DevtoolsPanel />
+          </DevtoolsProvider>
         </AntdApp>
       </ConfigProvider>
     </BrowserRouter>

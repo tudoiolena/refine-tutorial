@@ -9,6 +9,8 @@ import {
   List,
 } from "@refinedev/antd";
 
+import { ShowButton as CustomShowButton } from "../../components/buttons/show";
+
 import { Table, Space, Input, Select } from "antd";
 
 export const ListProducts = () => {
@@ -82,6 +84,14 @@ export const ListProducts = () => {
             <Space>
               <ShowButton hideText size="small" recordItemId={record.id} />
               <EditButton hideText size="small" recordItemId={record.id} />
+            </Space>
+          )}
+        />
+        <Table.Column
+          title="Show button"
+          render={(_, record) => (
+            <Space>
+              <CustomShowButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}
         />
