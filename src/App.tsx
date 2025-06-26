@@ -12,17 +12,29 @@ import {
   useNotificationProvider,
 } from "@refinedev/antd";
 
-import { dataProvider } from "./providers/data-provider";
-import { authProvider } from "./providers/auth-provider";
+// import { dataProvider } from "./providers/data-provider";
+import { amplifyDataProvider } from "./providers/amplify-data-provider";
+import { authProvider } from "./providers/amplify-auth-provider";
 
-import { ShowProduct } from "./pages/products/show";
-import { EditProduct } from "./pages/products/edit";
-import { ListProducts } from "./pages/products/list";
-import { CreateProduct } from "./pages/products/create";
+// import { ShowProduct } from "./pages/products/show";
+// import { EditProduct } from "./pages/products/edit";
+// import { ListProducts } from "./pages/products/list";
+// import { CreateProduct } from "./pages/products/create";
+import { ListPosts } from "./pages/posts/list";
+import { ShowPost } from "./pages/posts/show";
+import { EditPost } from "./pages/posts/edit";
+import { CreatePost } from "./pages/posts/create";
 
-import { Login } from "./pages/login";
-import { Header } from "./pages/components/header";
-import { CategoriesList } from "./pages/categories/list";
+import { ShowUser } from "./pages/users/show";
+import { EditUser } from "./pages/users/edit";
+import { ListUsers } from "./pages/users/list";
+import { CreateUser } from "./pages/users/create";
+
+// import { Login } from "./pages/login";
+import { LoginPage } from "./components/pages/auth/components/login";
+import { RegisterPage } from "./components/pages/auth/components/register";
+import { ForgotPasswordPage } from "./components/pages/auth/components/forgotPassword";
+import { ChangePasswordPage } from "./pages/change-password";
 
 // We're importing a reset.css file to reset the default styles of the browser.
 import "antd/dist/reset.css";
@@ -34,31 +46,26 @@ export default function App(): JSX.Element {
         <AntdApp>
           <DevtoolsProvider>
             <Refine
-              dataProvider={dataProvider}
+              dataProvider={amplifyDataProvider}
               authProvider={authProvider}
               routerProvider={routerProvider}
               notificationProvider={useNotificationProvider}
               resources={[
-                // We're adding the categories resource to the resources array
                 {
-                  name: "protected-products",
+                  name: "posts",
                   list: "/products",
                   show: "/products/:id",
                   edit: "/products/:id/edit",
                   create: "/products/create",
-                  meta: { label: "Products" },
-                }, // This way, there will be a link to the categories list in the sidebar
-                {
-                  name: "categories",
-                  list: "/categories",
-                  meta: { label: "Categories" },
+                  meta: { label: "Amplify Products" },
                 },
                 {
-                  name: "categories",
-                  list: "/categories",
-                  create: "/categories/create",
-                  edit: "/categories/edit/:id",
-                  show: "/categories/show/:id",
+                  name: "users",
+                  list: "/users",
+                  create: "/users/create",
+                  edit: "/users/edit/:id",
+                  show: "/users/show/:id",
+                  meta: { label: "Users" },
                 },
               ]}
               options={{
@@ -76,7 +83,7 @@ export default function App(): JSX.Element {
                     >
                       <ThemedLayoutV2
                         Title={(props) => (
-                          <ThemedTitleV2 {...props} text="Awesome Project" />
+                          <ThemedTitleV2 {...props} text="My Project" />
                         )}
                       >
                         <Outlet />
@@ -87,28 +94,40 @@ export default function App(): JSX.Element {
                   <Route
                     index
                     element={
-                      <NavigateToResource resource="protected-products" />
+                      <NavigateToResource resource="posts" />
                     }
                   />
-                  <Route path="/products">
-                    <Route index element={<ListProducts />} />
+                  {/* <Route path="/products"> */}
+                    {/* <Route index element={<ListProducts />} />
                     <Route path=":id" element={<ShowProduct />} />
                     <Route path=":id/edit" element={<EditProduct />} />
-                    <Route path="create" element={<CreateProduct />} />
+                    <Route path="create" element={<CreateProduct />} /> */}
+                  {/* </Route> */}
+                  <Route path="/posts">
+                    <Route index element={<ListPosts />} />
+                    <Route path=":id" element={<ShowPost />} />
+                    <Route path=":id/edit" element={<EditPost />} />
+                    <Route path="create" element={<CreatePost />} />
                   </Route>
-                  <Route path="/categories">
-                    <Route index element={<CategoriesList />} />
+                  <Route path="/users">
+                    <Route index element={<ListUsers />} />
+                    <Route path=":id" element={<ShowUser />} />
+                    <Route path=":id/edit" element={<EditUser />} />
+                    <Route path="create" element={<CreateUser />} />
                   </Route>
                 </Route>
                 <Route
                   element={
                     <Authenticated key="auth-pages" fallback={<Outlet />}>
                       {/* We're redirecting the user to `/` if they are authenticated and trying to access the `/login` route */}
-                      <NavigateToResource resource="protected-products" />
+                      <NavigateToResource resource="posts" />
                     </Authenticated>
                   }
                 >
-                  <Route path="/login" element={<Login />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                  <Route path="/change-password" element={<ChangePasswordPage />} />
                 </Route>
               </Routes>
             </Refine>

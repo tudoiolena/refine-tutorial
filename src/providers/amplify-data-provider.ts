@@ -1,0 +1,1 @@
+export { amplifyDataProvider } from "./amplify-data-provider/index"; 

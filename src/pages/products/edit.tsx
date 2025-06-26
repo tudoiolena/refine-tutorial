@@ -4,9 +4,7 @@ import { Form, Input, Select, InputNumber } from "antd";
 
 export const EditProduct = () => {
   const { formProps, saveButtonProps, query } = useForm({
-    refineCoreProps: {
-      redirect: "show",
-    },
+    redirect: "show",
   });
 
   const { selectProps } = useSelect({
